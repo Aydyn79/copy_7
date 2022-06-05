@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block title %}
+Список оборудования
+{% endblock %}
+{% block style %}
+	{% include "inc_style.html" %}
+{% endblock %}
+{% block menu %}
+	{% include "inc_main_menu.html" %}
+{% endblock %}
+{% block body %}
+    <a href="/">назад</a>
+
+    <h1>Список оборудования</h1>
+    <ul>
+
+        {% for item in objects_list %}
+        <li>
+            {{item.name}} <span>Количество сервисов: {{item.services_count}}</span>
+        </li>
+        {% endfor %}
+    </ul>
+
+	<div>
+		<li><a href="/service_list/">Список сервисов</a></li>
+		<li><a href="/create_service/">Создать сервис</a></li>
+	</div>
+{% endblock %}

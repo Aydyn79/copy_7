@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block title %}
+Создание сервиса
+{% endblock %}
+{% block style %}
+	{% include "inc_style.html" %}
+{% endblock %}
+{% block menu %}
+	{% include "inc_main_menu.html" %}
+{% endblock %}
+{% block body %}
+    <div>
+        <a href="/service_list/?id={{id}}">назад</a>
+    </div>
+
+    <br>
+    <br>
+
+    <div>
+        <h1>Создание сервиса для оборудования "{{name}}"</h1>
+        <form method="post">
+            <input type="text" name="name" placeholder="Название">
+            <button type="submit">Сохранить и вернуться к списку сервисов</button>
+        </form>
+    </div>
+    {% block footer %}
+          {% include "inc_footer.html" %}
+    {% endblock %}
+{% endblock %}

@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+{% block title %}
+Привязка заказчика к сервису
+{% endblock %}
+{% block style %}
+	{% include "inc_style.html" %}
+{% endblock %}
+{% block menu %}
+	{% include "inc_menu.html" %}
+{% endblock %}
+{% block body %}
+	<div>
+		<li>
+			<a href="/customer_list/">Перечень заказчиков</a>
+		</li>
+		<li>
+			<a href="/customer_create/">Внести данные о заказчике</a>
+		</li>
+	</div>
+    <h1>Добавление сервиса заказчику</h1>
+    <form method="post">
+        <select size="3" name="service_name">
+            {% for item in services %}
+            <option value="{{item.name}}">{{item.name}}</option>
+            {% endfor %}
+        </select>
+        <select size="3" name="customer_name">
+            {% for item in customers %}
+            <option value="{{item.name}}">{{item.name}}</option>
+            {% endfor %}
+        </select>
+        <button type="submit">Записать</button>
+    </form>
+{% endblock %}

@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block title %}
+Создание заказчика
+{% endblock %}
+{% block style %}
+	{% include "inc_style.html" %}
+{% endblock %}
+{% block menu %}
+	{% include "inc_menu.html" %}
+{% endblock %}
+{% block body %}
+	<div>
+		<li>
+			<a href="/customer_list/">Список заказчиков</a>
+		</li>
+	</div>
+    <div>
+        <h1>Создание заказчика</h1>
+        <form method="post">
+            <input type="text" name="name" placeholder="Название организации">
+            <button type="submit">Сохранить</button>
+        </form>
+    </div>
+{% endblock %}

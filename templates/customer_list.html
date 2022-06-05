@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block title %}
+Перечень заказчиков
+{% endblock %}
+{% block style %}
+	{% include "inc_style.html" %}
+{% endblock %}
+{% block menu %}
+	{% include "inc_menu.html" %}
+{% endblock %}
+{% block body %}
+	<div>
+		<li>
+			<a href="/customer_create/">Внести данные о заказчике</a>
+		</li>
+		<li>
+			<a href="/add_service/">Привязка заказчика к сервису</a>
+		</li>
+	</div>
+    <h1>Перечень заказчиков</h1>
+    <div>
+
+        {% for item in objects_list %}
+        <li>
+            {{item.name}}
+            {% for service in item.services %}
+                {{service.name}}
+            {% endfor %}
+        </li>
+        {% endfor %}
+    </div>
+{% endblock %}

@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block title %}
+Список курсов
+{% endblock %}
+{% block style %}
+	{% include "inc_style.html" %}
+{% endblock %}
+{% block menu %}
+	{% include "inc_main_menu.html" %}
+{% endblock %}
+{% block body %}
+    <div>
+        <a href="/">назад на главную</a>
+    </div>
+
+    <br>
+    <br>
+
+    <div>
+        <a href="/create_service/?id={{id}}">Создать новый сервис</a>
+        <br>
+        <h1>Список сервисов для оборудования "{{name}}"</h1>
+        {% for item in objects_list %}
+        <li>
+            {{item.name}} <span><a href="/copy_service/?name={{item.name}}">скопировать</a></span>
+        </li>
+        {% endfor %}
+    </div>
+{% endblock %}

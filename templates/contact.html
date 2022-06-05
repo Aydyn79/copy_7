@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% block title %}
+  Связаться с нами
+{% endblock %}
+{% block style %}
+	{% include "inc_style.html" %}
+{% endblock %}
+{% block body %}
+
+  <div id="main">
+    <div id="header">
+      <div id="logo">
+        <div id="logo_text">
+          <!-- class="logo_colour", allows you to change the colour of the text -->
+          <h1><a href="index.html">OOO <span class="logo_colour">"Industrial Automation"</span></a></h1>
+          <h2>С нетерпением ждём Вашего звонка!</h2>
+        </div>
+      </div>
+      {% block menu %}
+          {% include "inc_main_menu.html" %}
+      {% endblock %}
+    </div>
+    <div id="site_content">
+      {% block bar %}
+          {% include "inc_news_bar.html" %}
+        {% endblock %}
+      <div id="content">
+        <!-- insert the page content here -->
+        <h1>Напишите нам</h1>
+        <p>Задайте вопрос:</p>
+        <form action="#" method="post">
+          <div class="form_settings">
+            <p><span>Name</span><input class="contact" type="text" name="your_name" value="" /></p>
+            <p><span>Email Address</span><input class="contact" type="text" name="your_email" value="" /></p>
+            <p><span>Message</span><textarea class="contact textarea" rows="8" cols="50" name="your_enquiry"></textarea></p>
+            <p style="padding-top: 15px"><span>&nbsp;</span><input class="submit" type="submit" name="contact_submitted" value="submit" /></p>
+          </div>
+        </form>
+        <p>644042, г. Омск, проспект К. Маркса, д. 18, корпус 1 «А»<br>
+			Тел.: +7-3812-37-01-33<br>
+			E-mail: benderoi@industrialsystems.ru<br>
+			Первый заместитель генерального директора:<br>
+			Бендер Остап Ибрагимович, тел.: +7-906-918-81-60</p>
+      </div>
+    </div>
+    {% block footer %}
+          {% include "inc_footer.html" %}
+    {% endblock %}
+  </div>
+{% endblock %}
