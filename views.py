@@ -94,31 +94,22 @@ class CreateEquipment:
 
         if request['method'] == 'POST':
             # метод пост
+            # print(request)
             data = request['data']
             name = data['name']
             name = site.decode_value(name)
             equipment_id = data.get('equipment_id')
-            log.log(equipment_id)
+            # log.log(equipment_id)
             equipment = None
             if equipment_id:
                 equipment = site.find_equipment_by_id(int(equipment_id))
             new_equipment = site.create_equipment(name, equipment)
-            log.log(new_equipment.name)
-            log.log(new_equipment.services)
             # Внёс изменения
             #=======================================================================
             new_equipment.mark_new()
             UnitOfWork.get_current().commit()
             #=======================================================================
-            # Добавил
-            # ===================================================================
-            mapper = Mappers.get_current_mapper('equipment')
-            new_equipment_with_id = mapper.find_by_name(name)
-            print(f'новый объект оборудования {new_equipment_with_id.name}')
-            print(f'новый объект оборудования {new_equipment_with_id.services}')
-            site.equipments.append(new_equipment_with_id)
-            # ===================================================================
-
+            site.equipments.append(new_equipment)
             return '200 OK', render('index.html', objects_list=site.equipments)
         else:
             equipments = site.equipments
@@ -133,6 +124,7 @@ class EquipmentList:
     @Debug()
     def __call__(self, request):
         print(site.equipments)
+
         return '200 OK', render('equipment_list.html',
                                 objects_list=site.equipments)
 
@@ -188,7 +180,7 @@ class CustomerCreateView(CreateView):
         name = data['name']
         name = site.decode_value(name)
         new_obj = site.create_user('customer', name)
-        print(new_obj.name)
+        # print(new_obj.name)
         site.customers.append(new_obj)
         #Добавил
         #===================================================================

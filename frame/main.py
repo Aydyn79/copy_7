@@ -40,12 +40,12 @@ class Framework:
         if method_request == 'POST':
             data = Post().get_request_params(env)
             request['data'] = Framework.decode_value(data)
-            print(f'Пришли данные с формы на странице Contact us: {Framework.decode_value(data)}')
+            # print(f'Пришли данные с формы на странице Contact us: {Framework.decode_value(data)}')
         if method_request == 'GET':
             request_params = Get().get_request_params(env)
             request['request_params'] = Framework.decode_value(request_params)
-            print(f'Пришли параметры GET-запроса:'
-                  f' {Framework.decode_value(request_params)}')
+            # print(f'Пришли параметры GET-запроса:'
+            #       f' {Framework.decode_value(request_params)}')
 
         # если такой путь существует
         # отработка паттерна page controller
@@ -62,7 +62,6 @@ class Framework:
         # запуск контроллера с передачей объекта request
         print(request)
         code, body = view(request)
-        print(code)
         response(code, [('Content-Type', 'text/html')])
         return [body.encode('utf-8')]
 

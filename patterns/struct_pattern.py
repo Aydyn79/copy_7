@@ -17,7 +17,7 @@ class Debug:
         def request_type(method):
             def req(*args, **kw):
                 result = method(*args, **kw)
-                print(result)
+                print(f'аргумент result функции request_type {result}')
                 if method.__name__ == '__call__':
                     print(f'debug --> имя класса.имя функции: {self.cls_name} тип запроса {args[1]["method"]}, время вызова {datetime.now()}')
                 else:

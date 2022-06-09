@@ -8,7 +8,7 @@ from quopri import decodestring
 
 
 from sqlite3 import connect
-from patterns.behav_pattern import Subject
+from patterns.behav_pattern import Subject, BaseSerializer
 from patterns.uow_pattern import DomainObject
 
 
@@ -125,9 +125,11 @@ class ServiceFactory:
 
 # Оборудование
 class Equipment(DomainObject):
+    auto_id = 0
 
-    def __init__(self, id, name, equipment=None):
-        self.id = id
+    def __init__(self, name, equipment=None):
+        self.id = Equipment.auto_id
+        Equipment.auto_id += 1
         self.name = name
         self.equipment = equipment
         self.services = []
@@ -255,38 +257,54 @@ class CustomerMapper(AbcMapper):
             raise RecordNotFoundException(f'record with id={id} not found')
 
 class EquipmentMapper(AbcMapper):
+    def insert(self, obj):
+        statement = f"INSERT INTO {self.tablename} (id, name, equipObj) VALUES (?,?,?)"
+        bs = BaseSerializer(obj)
+        equipObj = bs.save()
+        self.cursor.execute(statement, (obj.id, obj.name, equipObj))
+        try:
+            self.connection.commit()
+        except Exception as e:
+            raise DbCommitException(e.args)
 
     def all(self):
         statement = f'SELECT * from {self.tablename}'
         self.cursor.execute(statement)
         result = []
         for item in self.cursor.fetchall():
-            id, name = item
-            equipment = Equipment(name, equipment=None)
-            equipment.id = id
-            result.append(equipment)
+            _, _, equipObj = item
+            result.append(BaseSerializer.load(equipObj))
         return result
 
     def find_by_id(self, id):
-        statement = f"SELECT id, name FROM {self.tablename} WHERE id=?"
+        statement = f"SELECT equipObj FROM {self.tablename} WHERE id=?"
         self.cursor.execute(statement, (id,))
-        result = self.cursor.fetchone()
+        result = self.cursor.fetchone()[0]
         if result:
-            return Equipment(*result)
+            return BaseSerializer.load(result)
             # return result
         else:
             raise RecordNotFoundException(f'record with id={id} not found')
 
     def find_by_name(self, name):
-        statement = f"SELECT id, name FROM {self.tablename} WHERE name=?"
+        statement = f"SELECT equipObj FROM {self.tablename} WHERE name=?"
         self.cursor.execute(statement, (name,))
-        result = self.cursor.fetchone()
+        result = self.cursor.fetchone()[0]
         if result:
-            return Equipment(*result)
+            return BaseSerializer.load(result)
             # return result
         else:
             raise RecordNotFoundException(f'record with name={name} not found')
 
+    def update(self, obj):
+        statement = f"UPDATE {self.tablename} SET name=?, equipObj=? WHERE id=?"
+        bs = BaseSerializer(obj)
+        equipObj = bs.save()
+        self.cursor.execute(statement, (obj.name, equipObj, obj.id))
+        try:
+            self.connection.commit()
+        except Exception as e:
+            raise DbUpdateException(e.args)
 
 connection = connect('patterns.sqlite')
 
@@ -333,15 +351,18 @@ class RecordNotFoundException(Exception):
 
 
 if __name__ == '__main__':
-
-    conn = connect('/home/nexter/PycharmProjects/patterns/copy_7/patterns.sqlite')
+    conn = connect('/home/nexter/PycharmProjects/patterns/patrn_lesson_7/patterns.sqlite')
     mapper = EquipmentMapper(conn, 'equipment')
     mapper1 = CustomerMapper(conn, 'customer')
-    # result = mapper.find_by_name('4')
-    result = mapper.find_by_id(4)
+    resultid = mapper.find_by_id('2')
+    # print(resultid.name)
+    resultname = mapper.find_by_name('Электродвигатель')
+    mapper.update(resultid)
+    result = mapper.all()
     for item in result:
-        print(item)
-
+        print(item.name)
+    print(resultname.id)
+    print(resultid.name)
 
 
 
